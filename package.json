@@ -1,6 +1,6 @@
 {
   "name": "@node-console-log/log",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "console log",
   "main": "index.js",
   "scripts": {
